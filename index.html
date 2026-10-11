@@ -91,10 +91,7 @@ input:focus{outline:none;border-color:var(--yl);box-shadow:0 0 0 3px rgba(255,21
 .dock{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:6px;padding:5px;border-radius:999px;background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);border:1px solid rgba(255,255,255,.35);box-shadow:0 14px 30px -12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.45)}
 .gb{width:auto;display:flex;align-items:center;gap:7px;font:700 11px Poppins,sans-serif;letter-spacing:.8px;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 13px;box-shadow:none;white-space:nowrap}
 .gb:active{transform:scale(.95)}
-.gb.on,.playing{background:rgba(255,217,59,.28);border-color:var(--yl);box-shadow:0 0 18px rgba(255,217,59,.45)}
-.eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px}.eq i{width:3px;height:4px;background:var(--yl);border-radius:2px}
-.playing .eq i{animation:eq .8s ease-in-out infinite}.eq i:nth-child(2){animation-delay:.2s!important}.eq i:nth-child(3){animation-delay:.4s!important}
-@keyframes eq{50%{height:14px}}
+.gb.on{background:rgba(255,217,59,.28);border-color:var(--yl);box-shadow:0 0 18px rgba(255,217,59,.45)}
 .chip{display:inline-block;padding:5px 12px;margin-bottom:8px;border-radius:999px;font:700 12px Poppins,sans-serif;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
 .hero:before{content:"";position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;background:radial-gradient(circle,rgba(255,138,31,.45),transparent 65%);animation:aura 3s ease-in-out infinite}
 @keyframes aura{50%{transform:scale(1.25);opacity:.55}}
@@ -122,8 +119,7 @@ input:focus{outline:none;border-color:var(--yl);box-shadow:0 0 0 3px rgba(255,21
 <svg class="scene" viewBox="0 0 400 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1a5e"/><stop offset=".45" stop-color="#6a4fa8"/><stop offset=".72" stop-color="#ff9a76"/><stop offset="1" stop-color="#ffd89b"/></linearGradient><radialGradient id="sun"><stop offset="0" stop-color="#fff3c4" stop-opacity=".95"/><stop offset="1" stop-color="#ffb36b" stop-opacity="0"/></radialGradient></defs><rect width="400" height="800" fill="url(#sk)"/><circle cx="270" cy="525" r="150" fill="url(#sun)"/><g class="cl c1" fill="#fff" opacity=".85"><ellipse cx="80" cy="170" rx="52" ry="16"/><ellipse cx="112" cy="157" rx="38" ry="18"/><ellipse cx="52" cy="160" rx="30" ry="13"/></g><g class="cl c2" fill="#ffe3ee" opacity=".75"><ellipse cx="60" cy="300" rx="60" ry="17"/><ellipse cx="98" cy="287" rx="40" ry="19"/><ellipse cx="30" cy="292" rx="28" ry="12"/></g><g class="cl c3" fill="#ffd2b8" opacity=".8"><ellipse cx="70" cy="445" rx="56" ry="15"/><ellipse cx="104" cy="433" rx="36" ry="17"/></g><path d="M0 565Q90 505 200 548T400 525V800H0Z" fill="#3b4d8f" opacity=".85"/><path d="M0 625Q110 565 230 613T400 593V800H0Z" fill="#2c7a6b"/><g><rect x="62" y="592" width="38" height="25" fill="#f4e3c1"/><polygon points="57,593 81,572 105,593" fill="#c4543a"/><rect x="88" y="574" width="6" height="12" fill="#8a4b38"/><rect x="73" y="600" width="9" height="10" fill="#ffd36b"/></g><path d="M0 705Q120 655 250 692T400 672V800H0Z" fill="#1f5c4d"/><g fill="#164a3d"><circle cx="330" cy="660" r="20"/><circle cx="352" cy="668" r="15"/><rect x="326" y="672" width="5" height="22"/></g></svg>
 <div class="orb ob1"></div><div class="orb ob2"></div><div class="orb ob3"></div>
 <canvas id="fx"></canvas><div id="lv"></div><div id="lvt"></div><div id="lens"></div><div id="speed"></div><div id="burst"></div>
-<div class="dock"><button id="mbtn" class="gb"><span class="eq"><i></i><i></i><i></i></span>MUSIC</button><button id="vbtn" class="gb">&#128065; LIGHT VISION</button></div>
-<audio id="bgm" src="music.mp3" loop preload="auto" playsinline></audio>
+<div class="dock"><button id="vbtn" class="gb">&#128065; LIGHT VISION</button></div>
 <div class="wrap">
   <div class="logo bn">DON'T BLOCK ME!</div>
   <div class="sub">⚡ Anime Edition — find out if you can be trusted ⚡</div>
@@ -287,13 +283,9 @@ function end(){show("res");var p=Math.round(s/QUIZ.length*100);
   addEventListener("deviceorientation",function(e){if(e.gamma!=null&&e.beta!=null)aim(c(e.gamma/30),c((e.beta-45)/30))});
 })();
 
-// ===== V3: music, particles, anime FX, light vision =====
+// ===== V3: particles, anime FX, light vision =====
 (function(){
  var $=function(x){return document.getElementById(x)},d=document.documentElement.style,calm=matchMedia("(prefers-reduced-motion:reduce)").matches;
- // --- music (starts on START tap; button toggles) ---
- var bgm=$("bgm"),mb=$("mbtn"),off=false;bgm.volume=.55;
- function mus(on){if(on){var p=bgm.play();if(p)p.then(function(){mb.classList.add("playing")}).catch(function(){})}else{bgm.pause();mb.classList.remove("playing")}}
- mb.onclick=function(){off=!bgm.paused;mus(bgm.paused)};
  // --- particles: sakura + fireflies + sparkle bursts ---
  var fx=$("fx"),cx=fx.getContext("2d"),W=0,H=0,P=[],B=[];
  function rs(){var r=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;fx.width=W*r;fx.height=H*r;cx.setTransform(r,0,0,r,0,0)}
@@ -317,7 +309,7 @@ function end(){show("res");var p=Math.round(s/QUIZ.length*100);
  function quake(){replay(document.querySelector(".wrap"),"quake")}
  // --- hook into the existing quiz functions ---
  var _start=start,_pick=pick,_end=end;
- start=function(){_start();$("hud").textContent="\u2b50 0 correct";if(!off)mus(true)};
+ start=function(){_start();$("hud").textContent="\u2b50 0 correct"};
  pick=function(b,k){var ok=k==QUIZ[i].a;_pick(b,k);$("hud").textContent="\u2b50 "+s+" correct";var r=b.getBoundingClientRect();
   if(ok){burst(r.left+r.width/2,r.top+r.height/2,34);word(pickOne(["YES!","SUGOI!","NICE!"]),"#3ddc84");speed(0)}
   else{word(pickOne(["BAKA!","NANI?!","TCH!"]),"#ff3d81");speed(1);quake()}};
